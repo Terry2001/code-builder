@@ -10,10 +10,14 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationService
+                serviceImplementation="link.biu.codebuilder.settings.SettingValue"
+        />
         <intentionAction>
             <className>link.biu.codebuilder.TestIntention</className>
             <category>Java</category>
         </intentionAction>
+        <applicationConfigurable instance="link.biu.codebuilder.settings.ProjectSettingConfig" displayName="Code Builder" id="code-builder" groupId="root" />
     </extensions>
 
     <actions>

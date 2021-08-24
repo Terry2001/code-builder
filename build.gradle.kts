@@ -28,6 +28,8 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+    compileOnly("org.projectlombok:lombok:1.18.20")
+    annotationProcessor("org.projectlombok:lombok:1.18.20")
 }
 
 // Configure gradle-intellij-plugin plugin.
