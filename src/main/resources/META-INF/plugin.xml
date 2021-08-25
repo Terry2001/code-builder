@@ -10,9 +10,8 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService
-                serviceImplementation="link.biu.codebuilder.settings.SettingValue"
-        />
+        <applicationService serviceImplementation="link.biu.codebuilder.settings.SettingValue"/>
+        <applicationService serviceImplementation="link.biu.codebuilder.service.TemplateService"/>
         <intentionAction>
             <className>link.biu.codebuilder.TestIntention</className>
             <category>Java</category>

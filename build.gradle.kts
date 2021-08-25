@@ -30,6 +30,10 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
+
+    // https://mvnrepository.com/artifact/org.freemarker/freemarker
+    implementation("org.freemarker:freemarker:2.3.31")
+
 }
 
 // Configure gradle-intellij-plugin plugin.

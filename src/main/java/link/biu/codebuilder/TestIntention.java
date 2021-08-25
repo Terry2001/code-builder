@@ -6,43 +6,45 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
+import link.biu.codebuilder.service.TemplateService;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestIntention extends PsiElementBaseIntentionAction implements IntentionAction {
+
+    @SneakyThrows
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) throws IncorrectOperationException {
 
-//        int lineNumber = editor.getDocument().getLineNumber(editor.getCaretModel().getOffset());
-//
-//        String text = editor.getDocument().getText(new TextRange(
-//                editor.getDocument().getLineStartOffset(lineNumber),
-//                editor.getDocument().getLineEndOffset(lineNumber)
-//        ));
-//
-//        WriteCommandAction.runWriteCommandAction(project, () ->
-//                editor.getDocument().replaceString(
-//                        editor.getDocument().getLineStartOffset(lineNumber),
-//                        editor.getDocument().getLineEndOffset(lineNumber),
-//                        String.format("\"%s\"", text)
-//                )
-//        );
+        int lineNumber = editor.getDocument().getLineNumber(editor.getCaretModel().getOffset());
 
-        PsiMethod containingMethod = PsiTreeUtil.getParentOfType(psiElement, PsiMethod.class);
-        if (containingMethod != null) {
-            int textOffset = containingMethod.getStartOffsetInParent();
-            int textLength = containingMethod.getTextLength();
+        String templateName = editor.getDocument().getText(new TextRange(
+                editor.getDocument().getLineStartOffset(lineNumber),
+                editor.getDocument().getLineEndOffset(lineNumber)
+        ));
 
-            WriteCommandAction.runWriteCommandAction(project, () ->
-                    editor.getSelectionModel().setSelection(textOffset, textOffset + textLength)
-            );
-        }
+        templateName = templateName.trim();
+
+        Map<String, Object> root = new HashMap<>();
+        root.put("name", "Account");
+
+        TemplateService templateService = TemplateService.getInstance();
+        String code = templateService.generateCode(templateName, root);
+
+        WriteCommandAction.runWriteCommandAction(project, () ->
+                editor.getDocument().replaceString(
+                        editor.getDocument().getLineStartOffset(lineNumber),
+                        editor.getDocument().getLineEndOffset(lineNumber),
+                        String.format("%s", code)
+                )
+        );
+
     }
 
     @Override
